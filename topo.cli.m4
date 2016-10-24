@@ -126,3 +126,6 @@ LINK(ip_BELNET(1), ip_UCL(1), UCL, 0)
 LINK(ip_BELNET(1), ip_ULg(1), ULg, 0)
 LINK(ip_BELNET(2), ip_UCL(2), UCL, 0)
 LINK(ip_BELNET(2), ip_ULg(2), ULg, 0)
+
+sim run
+net node ip_iCompany(1) show rt *

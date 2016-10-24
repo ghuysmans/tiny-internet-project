@@ -7,9 +7,9 @@ bgp add router $2 $1
 MORE($1, $3)')
 define(`ILINK', `net add link $1 $2
 net link $1 $2 igp-weight --bidir $3')
-#FIXME
-define(`LINK', `net add link $1 $2
-net link $1 $2 igp-weight --bidir $3')
+#beware, the third parameter is NOT a weight
+define(`LINK', `bgp router $1 add peer $3 $2
+bgp router $1 peer $2 up')
 #organizations
 define(`BigCarrier', 1)
 define(`Spring', 2)
@@ -60,6 +60,7 @@ NODE(ip_GEANT(4), GEANT, ip_GEANT(0)/24)
 net add domain BELNET igp
 NODE(ip_BELNET(1), BELNET, ip_BELNET(0)/24)
 NODE(ip_BELNET(2), BELNET, ip_BELNET(0)/24)
+#FIXME how to assign IP addresses to multi-netted ASes?
 MORE(ip_BELNET(1), ip_BELNET2(0)/24)
 MORE(ip_BELNET(2), ip_BELNET2(0)/24)
 net add domain CERN igp
@@ -76,4 +77,50 @@ NODE(ip_UCL(2), UCL, ip_UCL(0)/16)
 net add domain ULg igp
 NODE(ip_ULg(1), ULg, ip_ULg(0)/16)
 NODE(ip_ULg(2), ULg, ip_ULg(0)/16)
-#TODO igp/bgp links
+
+ILINK(ip_Spring(1), ip_Spring(3), 10)
+ILINK(ip_Spring(2), ip_Spring(4), 10)
+ILINK(ip_Spring(1), ip_Spring(2), 0)
+ILINK(ip_Spring(3), ip_Spring(4), 0)
+ILINK(ip_BigCarrier(1), ip_BigCarrier(3), 10)
+ILINK(ip_BigCarrier(2), ip_BigCarrier(4), 10)
+ILINK(ip_BigCarrier(1), ip_BigCarrier(2), 0)
+ILINK(ip_BigCarrier(3), ip_BigCarrier(4), 0)
+ILINK(ip_Abilene(1), ip_BigCarrier(2), 40)
+ILINK(ip_Abilene(2), ip_BigCarrier(3), 50)
+ILINK(ip_Abilene(3), ip_BigCarrier(1), 20)
+ILINK(ip_GEANT(1), ip_BigCarrier(3), 5)
+ILINK(ip_GEANT(3), ip_BigCarrier(4), 10)
+ILINK(ip_GEANT(4), ip_BigCarrier(2), 5)
+ILINK(ip_GEANT(2), ip_BigCarrier(1), 10)
+ILINK(ip_GEANT(1), ip_BigCarrier(4), 12)
+ILINK(ip_BELNET(1), ip_BELNET(2), 0)
+ILINK(ip_UCL(1), ip_UCL(2), 0)
+ILINK(ip_ULg(1), ip_ULg(2), 0)
+ILINK(ip_UCLA(1), ip_UCLA(2), 0)
+
+LINK(ip_iCompany(1), ip_Spring(1), Spring)
+LINK(ip_iCompany(1), ip_Spring(2), Spring)
+LINK(ip_iCompany(1), ip_Spring(3), Spring)
+LINK(ip_BigCarrier(1), ip_Spring(1), Spring)
+LINK(ip_BigCarrier(2), ip_Spring(2), Spring)
+LINK(ip_BigCarrier(3), ip_Spring(3), Spring)
+LINK(ip_BigCarrier(4), ip_Spring(4), Spring)
+LINK(ip_Spring(3), ip_Abilene(1), Abilene)
+LINK(ip_Spring(3), ip_UCLA(1), UCLA)
+LINK(ip_BigCarrier(3), ip_GEANT(1), GEANT)
+LINK(ip_BigCarrier(4), ip_GEANT(1), GEANT)
+LINK(ip_BigCarrier(1), ip_GEANT(2), GEANT)
+LINK(ip_BigCarrier(2), ip_BELNET(2), BELNET)
+LINK(ip_Abilene(2), ip_UCLA(1), UCLA)
+LINK(ip_Abilene(2), ip_UCLA(2), UCLA)
+LINK(ip_Abilene(1), ip_GEANT(1), GEANT)
+LINK(ip_Abilene(3), ip_GEANT(3), GEANT)
+LINK(ip_Abilene(3), ip_CERN(1), CERN)
+LINK(ip_GEANT(3), ip_CERN(1), CERN)
+LINK(ip_GEANT(3), ip_BELNET(1), BELNET)
+LINK(ip_GEANT(4), ip_BELNET(2), BELNET)
+LINK(ip_BELNET(1), ip_UCL(1), UCL)
+LINK(ip_BELNET(1), ip_ULg(1), ULg)
+LINK(ip_BELNET(2), ip_UCL(2), UCL)
+LINK(ip_BELNET(2), ip_ULg(2), ULg)

@@ -7,8 +7,10 @@ bgp add router $2 $1
 MORE($1, $3)')
 define(`ILINK', `net add link $1 $2
 net link $1 $2 igp-weight --bidir $3')
-#beware, the third parameter is NOT a weight
-define(`LINK', `bgp router $1 add peer $3 $2
+define(`LINK', `net add link $1 $2
+net node $1 route add $2/32 --oif=$2/32 $4
+net node $2 route add $1/32 --oif=$1/32 $4
+bgp router $1 add peer $3 $2
 bgp router $1 peer $2 up')
 #organizations
 define(`BigCarrier', 1)

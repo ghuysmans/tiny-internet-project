@@ -84,22 +84,30 @@ ILINK(ip_Spring(1), ip_Spring(3), 10)
 ILINK(ip_Spring(2), ip_Spring(4), 10)
 ILINK(ip_Spring(1), ip_Spring(2), 0)
 ILINK(ip_Spring(3), ip_Spring(4), 0)
+net domain Spring compute
 ILINK(ip_BigCarrier(1), ip_BigCarrier(3), 10)
 ILINK(ip_BigCarrier(2), ip_BigCarrier(4), 10)
 ILINK(ip_BigCarrier(1), ip_BigCarrier(2), 0)
 ILINK(ip_BigCarrier(3), ip_BigCarrier(4), 0)
+net domain BigCarrier compute
 ILINK(ip_Abilene(1), ip_Abilene(2), 40)
 ILINK(ip_Abilene(2), ip_Abilene(3), 50)
 ILINK(ip_Abilene(3), ip_Abilene(1), 20)
+net domain Abilene compute
 ILINK(ip_GEANT(1), ip_GEANT(3), 5)
 ILINK(ip_GEANT(3), ip_GEANT(4), 10)
 ILINK(ip_GEANT(4), ip_GEANT(2), 5)
 ILINK(ip_GEANT(2), ip_GEANT(1), 10)
 ILINK(ip_GEANT(1), ip_GEANT(4), 12)
+net domain GEANT compute
 ILINK(ip_BELNET(1), ip_BELNET(2), 0)
+net domain BELNET compute
 ILINK(ip_UCL(1), ip_UCL(2), 0)
+net domain UCL compute
 ILINK(ip_ULg(1), ip_ULg(2), 0)
+net domain ULg compute
 ILINK(ip_UCLA(1), ip_UCLA(2), 0)
+net domain UCLA compute
 
 LINK(ip_iCompany(1), ip_Spring(1), Spring, 2)
 LINK(ip_iCompany(1), ip_Spring(2), Spring, 2)

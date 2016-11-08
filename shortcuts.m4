@@ -9,7 +9,7 @@ define(`BGP', `bgp router $1
 	peer ip_$2($3) up
 	exit')
 define(`ILINK', `net add link ip_$1($2) ip_$1($3)
-net link ip_$1($2) ip_$1($3) igp-weight --bidir $4')
+net link ip_$1($2) ip_$1($3) igp-weight --bidir $4
 BGP(ip_$1($2), `$1', $3)
 BGP(ip_$1($3), `$1', $2)')
 define(`LINK', `net add link ip_$1($2) ip_$3($4)

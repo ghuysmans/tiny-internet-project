@@ -15,3 +15,9 @@ BGP(ip_$1($2), `$3', $4)
 BGP(ip_$3($4), `$1', $2)')
 define(`ILINK', `LINK(`$1', $2, `$1', $3, $4)
 net link ip_$1($2) ip_$1($3) igp-weight --bidir $4')
+define(`ROUTES', `print "`$1'($2) is ip_$1($2)\n"
+net node ip_$1($2) show rt *')
+define(`PEERS', `print "`$1'($2) is connected to:\n"
+bgp router ip_$1($2) show peers')
+define(`PING', `print "`$1'($2) pings `$3'($4): "
+net node ip_$1($2) ping ip_$3($4)')

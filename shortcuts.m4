@@ -9,6 +9,7 @@ MORE(ip_$1($2), ip_$1(0)/$3)')
 define(`BGP', `#BGP($1, $2, $3)
 bgp router $1
 	add peer $2 ip_$2($3)
+	peer ip_$2($3) next-hop-self
 	peer ip_$2($3) up
 	exit')
 define(`LINK', `#LINK($1, $2, $3, $4, $5)

@@ -18,6 +18,7 @@ net node ip_$1($2) route add ip_$3($4)/32 --oif=ip_$3($4)/32 $5
 net node ip_$3($4) route add ip_$1($2)/32 --oif=ip_$1($2)/32 $5
 BGP(ip_$1($2), `$3', $4)
 BGP(ip_$3($4), `$1', $2)')
+#BEWARE, the cost can't be zero!
 define(`ILINK', `#ILINK($1, $2, $3, $4)
 LINK(`$1', `$2', `$1', `$3', `$4')
 net link ip_$1($2) ip_$1($3) igp-weight --bidir $4')

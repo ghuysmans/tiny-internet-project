@@ -44,6 +44,25 @@ Par exemple, R3 de Spring ne peut communiquer les routes BGP à R2 alors que R1 
 
 \section{Outils utilisés}
 Pour nous simplifier l'écriture de notre script et éviter de nombreuses erreurs (par copier-coller), nous avons utilisé \texttt{m4}, un puissant outil de remplacement de texte.
-Ainsi, nous avons pu regrouper plusieurs commandes au sein d'une seule macro et rendre le script bien plus lisible.
+Ainsi, nous avons pu, à plusieurs reprises, regrouper quelques commandes en une seule \textit{macro} et rendre le script bien plus lisible. Ces macros sont définies dans \texttt{shortcuts.m4}, voici les principales :
+\begin{itemize}
+\item \texttt{NODE} : créer un nœud avec une adresse IP (<<~déduite~>> à partir du nom de l'AS)
+	\begin{itemize}
+		\item Nom d'AS
+		\item Numéro du routeur dans l'AS
+		\item Sous-réseau
+	\end{itemize}
+\item \texttt{LINK} : créer un lien bidirectionnel entre deux routeurs BGP (iBGP ou eBGP)
+	\begin{itemize}
+		\item Nom du premier AS
+		\item Numéro du routeur dans le premier AS
+		\item Nom du second AS
+		\item Numéro du routeur dans le second AS
+		\item Coût du lien
+	\end{itemize}
+\item \texttt{ILINK} : comme \texttt{LINK} mais au sein d'un seul AS (et donc configurer un lien IGP en plus)
+\item \texttt{PROVIDER} : déclarer un fournisseur auquel on ne transmettra pas les routes d'autres fournisseurs ou de pairs (afin d'éviter de payer à sa place).
+\item \texttt{PEER} : déclarer un pair auquel on ne transmettra pas les routes d'autres fournisseurs et pairs (pour la même raison que ci-dessus).
+\end{itemize}
 
 \end{document}

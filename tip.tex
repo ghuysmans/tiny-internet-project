@@ -6,6 +6,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage[margin=1.5cm]{geometry}
 \title{Tiny Internet Project}
 \author{Guillaume \textsc{Huysmans}, Martin \textsc{Lempereur}}
 \begin{document}
@@ -31,19 +32,16 @@ Après cela, il nous restait à créer les liens. Pour cela, nous avons détermi
 Pour chaque routeur BGP (donc en bordure d'AS), on lui dit quel réseau il gère et quels sont ses voisins avec lesquels il devra échanger des messages en n'oubliant pas d'autoriser les connexions.
 
 \section{Filtres de routage}
-Nous avons déterminé les différents liens commerciaux qui existaient entre chaque AS. Une fois cela fait, il ne restait plus plus qu'à ajouter les filtres afin de respecter le tableau \ref{tab:rels}.
+Nous avons déterminé les différents liens commerciaux qui existaient entre chaque AS. Une fois cela fait, il ne restait plus plus qu'à ajouter les filtres afin de respecter la table \ref{tab:rels}.
 \begin{table}[h]
-	\includegraphics[width=\columnwidth]{comlink.png}
-	\caption{Relations interdomaines (source : cours de \textit{Réseaux II}, Bruno \textsc{Quoitin})}
+	\center
+	\includegraphics[width=0.5\columnwidth]{comlink.png}
+	\caption{Relations interdomaines (source~: slide du cours de \textit{Réseaux~II} par Bruno~\textsc{Quoitin})}
 	\label{tab:rels}
 \end{table}
 
-\section{Problèmes rencontrés}
-Un souci que nous n'avons pas pu corriger est que les routeurs de bordure n'arrivent pas à communiquer les routes BGP calculées à d'autres routeurs que ceux qui ont un lien direct avec eux au sein de leur AS.
-Par exemple, R3 de Spring ne peut communiquer les routes BGP à R2 alors que R1 et R4, eux, les connaissent (et pourtant, il existe une route IGP de R3 vers R2).
-
-\section{Outils utilisés}
-Pour nous simplifier l'écriture de notre script et éviter de nombreuses erreurs (par copier-coller), nous avons utilisé \texttt{m4}, un puissant outil de remplacement de texte.
+\section{Outil utilisé}
+Pour nous simplifier\footnote{À partir de 236 lignes de code (120 pour la définition de la topologie, 47 pour les relations interdomaines et 69 pour les raccourcis), nous avons généré 1291 lignes de script \texttt{cbgp}, commentaires \& blancs compris.} l'écriture de notre script et éviter de nombreuses erreurs (par copier-coller), nous avons utilisé \texttt{m4}, un puissant outil de remplacement de texte.
 Ainsi, nous avons pu, à plusieurs reprises, regrouper quelques commandes en une seule \textit{macro} et rendre le script bien plus lisible. Ces macros sont définies dans \texttt{shortcuts.m4}, voici les principales :
 \begin{itemize}
 \item \texttt{NODE} : créer un nœud avec une adresse IP (<<~déduite~>> à partir du nom de l'AS)
@@ -64,6 +62,44 @@ Ainsi, nous avons pu, à plusieurs reprises, regrouper quelques commandes en une
 \item \texttt{PROVIDER} : déclarer un fournisseur auquel on ne transmettra pas les routes d'autres fournisseurs ou de pairs (afin d'éviter de payer à sa place).
 \item \texttt{PEER} : déclarer un pair auquel on ne transmettra pas les routes d'autres fournisseurs et pairs (pour la même raison que ci-dessus).
 \end{itemize}
+
+Les relations entre les domaines sont ainsi facilement exprimées (début de \texttt{policy.ci.m4}) :
+\begin{verbatim}
+ROUTER(`Abilene', 1)
+    PROVIDER(`Spring', 3)
+    PEER(`GEANT', 1)
+    exit
+\end{verbatim}
+
+La politique générale de routage l'est tout autant, voici un extrait de \texttt{shortcuts.m4} qui implémente les "NO" de la table \ref{tab:rels} :
+\begin{verbatim}
+define(`PROVIDER', `#PROVIDER($1, $2)
+    peer ip_$1($2)
+        MARK_ANY(PROVIDER_COMMUNITY)
+        filter out
+            DENY_ANY(PROVIDER_COMMUNITY)
+            DENY_ANY(PEER_COMMUNITY)
+            exit
+        exit')
+define(`PEER', `#PEER($1, $2)
+    peer ip_$1($2)
+        MARK_ANY(PEER_COMMUNITY)
+        filter out
+            DENY_ANY(PROVIDER_COMMUNITY)
+            DENY_ANY(PEER_COMMUNITY)
+            exit
+        exit')
+\end{verbatim}
+
+\section{Problèmes rencontrés}
+Nous avions au départ mal lu la consigne et laissé des coûts IGP nuls. Un peu plus tard, nous avons découvert que \texttt{m4} pouvait facilement partir en boucle infinie si l'on n'y faisait pas trop attention.
+
+Un souci que nous n'avons pas pu corriger est que les routeurs de bordure n'arrivent pas à communiquer les routes BGP calculées à d'autres routeurs que ceux qui ont un lien direct avec eux au sein de leur AS.
+Par exemple, R3 de Spring ne peut communiquer les routes BGP à R2 alors que R1 et R4, eux, les connaissent (et pourtant, il existe une route IGP de R3 vers R2).
+
+Du fait de notre importante utilisation de \texttt{m4}, le débogage était un peu plus long : nous ne nous sommes pas habitués à associer mentalement aux AS leurs adresses IP et celles-ci se retrouvaient fréquemment dans la sortie du simulateur. Pour pouvoir traquer plus facilement nos erreurs, nous avons émis des commentaires reprenant les appels de macros.
+
+Il n'est pas possible de \textit{piper} la sortie de \texttt{m4} dans \texttt{cbgp} afin d'utiliser nos macros de manière interactive, probablement à cause du fait qu'il manipule le pseudo-terminal.
 
 \section{Conclusion}
 Pour une topologie moyennement simple comme celle de notre projet, nous avons pu voir que la configuration était très verbeuse et qu'un petit changement pouvait en entraîner beaucoup dans la configuration de plusieurs routeurs. De plus,

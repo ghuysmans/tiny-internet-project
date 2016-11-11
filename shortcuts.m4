@@ -9,18 +9,21 @@ MORE(ip_$1($2), ip_$1(0)/$3)')
 define(`BGP', `#BGP($1, $2, $3)
 bgp router $1
 	add peer $2 ip_$2($3)
-	peer ip_$2($3) next-hop-self
 	peer ip_$2($3) up
 	exit')
-define(`LINK', `#LINK($1, $2, $3, $4, $5)
+define(`SLINK', `#SLINK($1, $2, $3, $4, $5)
 net add link ip_$1($2) ip_$3($4)
 net node ip_$1($2) route add ip_$3($4)/32 --oif=ip_$3($4)/32 $5
 net node ip_$3($4) route add ip_$1($2)/32 --oif=ip_$1($2)/32 $5
 BGP(ip_$1($2), `$3', $4)
 BGP(ip_$3($4), `$1', $2)')
+define(`LINK', `#LINK($1, $2, $3, $4, $5)
+SLINK(`$1', `$2', `$3', `$4', `$5')
+bgp router ip_$1($2) peer ip_$3($4) next-hop-self
+bgp router ip_$3($4) peer ip_$1($2) next-hop-self')
 #BEWARE, the cost can't be zero!
 define(`ILINK', `#ILINK($1, $2, $3, $4)
-LINK(`$1', `$2', `$1', `$3', `$4')
+SLINK(`$1', `$2', `$1', `$3', `$4')
 net link ip_$1($2) ip_$1($3) igp-weight --bidir $4')
 
 define(`ROUTES', `print "`$1'($2) is ip_$1($2)\n"

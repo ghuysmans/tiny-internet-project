@@ -92,14 +92,34 @@ define(`PEER', `#PEER($1, $2)
 \end{verbatim}
 
 \section{Problèmes rencontrés}
+Du fait de notre importante utilisation de \texttt{m4}, le débogage était un peu plus long : nous ne nous sommes pas habitués à associer mentalement aux AS leurs adresses IP et celles-ci se retrouvaient fréquemment dans la sortie du simulateur. Pour pouvoir traquer plus facilement nos erreurs, nous avons émis des commentaires reprenant les appels de macros :
+\begin{verbatim}
+#ILINK(Spring, 1, 3, 10)
+net add link 2.0.0.1 2.0.0.3
+net node 2.0.0.1 route add 2.0.0.3/32 --oif=2.0.0.3/32 10
+net node 2.0.0.3 route add 2.0.0.1/32 --oif=2.0.0.1/32 10
+#BGP(2.0.0.1, Spring, 3)
+bgp router 2.0.0.1
+    add peer 2 2.0.0.3
+    peer 2.0.0.3 up
+    exit
+#BGP(2.0.0.3, Spring, 1)
+bgp router 2.0.0.3
+    add peer 2 2.0.0.1
+    peer 2.0.0.1 up
+    exit
+net link 2.0.0.1 2.0.0.3 igp-weight --bidir 10
+\end{verbatim}
+
 Nous avions au départ mal lu la consigne et laissé des coûts IGP nuls. Un peu plus tard, nous avons découvert que \texttt{m4} pouvait facilement partir en boucle infinie si l'on n'y faisait pas trop attention.
 
 Un souci que nous n'avons pas pu régler est que les routeurs de bordure n'arrivent pas à communiquer les routes BGP calculées à d'autres routeurs que ceux qui ont un lien direct avec eux au sein de leur AS.
 Par exemple, R3 de Spring ne peut communiquer les routes BGP à R2 alors que R1 et R4, eux, les connaissent (et pourtant, il existe une route IGP de R3 vers R2).
 
-Du fait de notre importante utilisation de \texttt{m4}, le débogage était un peu plus long : nous ne nous sommes pas habitués à associer mentalement aux AS leurs adresses IP et celles-ci se retrouvaient fréquemment dans la sortie du simulateur. Pour pouvoir traquer plus facilement nos erreurs, nous avons émis des commentaires reprenant les appels de macros.
+Il n'est pas possible de \textit{piper} la sortie de \texttt{m4} dans \texttt{cbgp} afin d'utiliser nos macros de manière interactive, probablement à cause du fait que ce dernier manipule le pseudo-terminal.
 
-Il n'est pas possible de \textit{piper} la sortie de \texttt{m4} dans \texttt{cbgp} afin d'utiliser nos macros de manière interactive, probablement à cause du fait qu'il manipule le pseudo-terminal.
+\section{Apports}
+Nous ne connaissions jusqu'alors \texttt{m4} que de nom (il est entre autres utilisé dans \textit{Autotools}) et c'était ici un outil de choix.
 
 \section{Conclusion}
 Pour une topologie moyennement simple comme celle de notre projet, nous avons pu voir que la configuration était très verbeuse et qu'un petit changement pouvait en entraîner beaucoup d'autres dans la configuration de plusieurs routeurs. De plus,

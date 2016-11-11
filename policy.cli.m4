@@ -1,46 +1,46 @@
 include(topo.cli.m4)
 
-bgp router ip_Abilene(1)
-	peer ip_Spring(3) IS_A_PROVIDER
-	peer ip_GEANT(1) IS_A_PEER
+ROUTER(`Abilene', 1)
+	PROVIDER(`Spring', 3)
+	PEER(`GEANT', 1)
 	exit
-bgp router ip_Abilene(3)
-	peer ip_GEANT(3) IS_A_PEER
+ROUTER(`Abilene', 3)
+	PEER(`GEANT', 3)
 	exit
-bgp router ip_BELNET(1)
-	peer ip_GEANT(3) IS_A_PROVIDER
+ROUTER(`BELNET', 1)
+	PROVIDER(`GEANT', 3)
 	exit
-bgp router ip_BELNET(2)
-	peer ip_GEANT(4) IS_A_PROVIDER
-	peer ip_BigCarrier(2) IS_A_PROVIDER
+ROUTER(`BELNET', 2)
+	PROVIDER(`GEANT', 4)
+	PROVIDER(`BigCarrier', 2)
 	exit
-bgp router ip_CERN(1)
-	peer ip_Abilene(3) IS_A_PROVIDER
-	peer ip_GEANT(3) IS_A_PROVIDER
+ROUTER(`CERN', 1)
+	PROVIDER(`Abilene', 3)
+	PROVIDER(`GEANT', 3)
 	exit
-bgp router ip_GEANT(1)
-	peer ip_Abilene(1) IS_A_PEER
-	peer ip_BigCarrier(3) IS_A_PROVIDER
-	peer ip_BigCarrier(4) IS_A_PROVIDER
+ROUTER(`GEANT', 1)
+	PEER(`Abilene', 1)
+	PROVIDER(`BigCarrier', 3)
+	PROVIDER(`BigCarrier', 4)
 	exit
-bgp router ip_GEANT(2)
-	peer ip_BigCarrier(1) IS_A_PROVIDER
+ROUTER(`GEANT', 2)
+	PROVIDER(`BigCarrier', 1)
 	exit
-bgp router ip_GEANT(3)
-	peer ip_Abilene(3) IS_A_PEER
+ROUTER(`GEANT', 3)
+	PEER(`Abilene', 3)
 	exit
-bgp router ip_UCLA(1)
-	peer ip_Spring(3) IS_A_PROVIDER
-	peer ip_Abilene(2) IS_A_PROVIDER
+ROUTER(`UCLA', 1)
+	PROVIDER(`Spring', 3)
+	PROVIDER(`Abilene', 2)
 	exit
-bgp router ip_UCLA(2)
-	peer ip_Abilene(2) IS_A_PROVIDER
+ROUTER(`UCLA', 2)
+	PROVIDER(`Abilene', 2)
 	exit
-bgp router ip_UCL(1)
-	peer ip_BELNET(1) IS_A_PROVIDER
+ROUTER(`UCL', 1)
+	PROVIDER(`BELNET', 1)
 	exit
-bgp router ip_UCL(2)
-	peer ip_BELNET(2) IS_A_PROVIDER
+ROUTER(`UCL', 2)
+	PROVIDER(`BELNET', 2)
 	exit
 
 sim run

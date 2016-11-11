@@ -26,8 +26,8 @@ define(`ILINK', `#ILINK($1, $2, $3, $4)
 SLINK(`$1', `$2', `$1', `$3', `$4')
 net link ip_$1($2) ip_$1($3) igp-weight --bidir $4')
 
-define(`PEER', 1)
-define(`PROVIDER', 2)
+define(`PEER_COMMUNITY', 1)
+define(`PROVIDER_COMMUNITY', 2)
 
 define(`MARK_ANY', `filter in
 			add-rule
@@ -40,20 +40,22 @@ define(`DENY_ANY', `add-rule
 				action deny
 				exit')
 
-define(`IS_A_PROVIDER', `
-		#IS_A_PROVIDER
-		MARK_ANY(PROVIDER)
+define(`ROUTER', `#ROUTER($1, $2)
+bgp router ip_$1($2)')
+define(`PROVIDER', `#PROVIDER($1, $2)
+	peer ip_$1($2)
+		MARK_ANY(PROVIDER_COMMUNITY)
 		filter out
-			DENY_ANY(PROVIDER)
-			DENY_ANY(PEER)
+			DENY_ANY(PROVIDER_COMMUNITY)
+			DENY_ANY(PEER_COMMUNITY)
 			exit
 		exit')
-define(`IS_A_PEER', `
-		#IS_A_PEER
-		MARK_ANY(PEER)
+define(`PEER', `#PEER($1, $2)
+	peer ip_$1($2)
+		MARK_ANY(PEER_COMMUNITY)
 		filter out
-			DENY_ANY(PROVIDER)
-			DENY_ANY(PEER)
+			DENY_ANY(PROVIDER_COMMUNITY)
+			DENY_ANY(PEER_COMMUNITY)
 			exit
 		exit')
 

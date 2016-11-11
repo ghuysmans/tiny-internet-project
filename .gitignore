@@ -1,8 +1,7 @@
 *.swp
-topo.cli
+tip.cli
 tip.aux
 tip.dvi
 tip.log
 tip.pdf
-tip.synctex.gz
-
+*.gz

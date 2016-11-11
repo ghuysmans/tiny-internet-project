@@ -29,31 +29,33 @@ net link ip_$1($2) ip_$1($3) igp-weight --bidir $4')
 define(`PEER', 1)
 define(`PROVIDER', 2)
 
-define(`MARK_ANY', `#MARK_ANY(`$1')
-filter in
-	add-rule
-		match any
-		action "community add $1"
-		exit
-	exit')
-define(`DENY_ANY', `#DENY_ANY(`$1')
-filter out
-	add-rule
-		match "community is $1"
-		action deny
-		exit
-	exit')
+define(`MARK_ANY', `filter in
+			add-rule
+				match any
+				action "community add $1"
+				exit
+			exit')
+define(`DENY_ANY', `add-rule
+				match "community is $1"
+				action deny
+				exit')
 
 define(`IS_A_PROVIDER', `
-	MARK_ANY(PROVIDER)
-	DENY_ANY(PROVIDER)
-	DENY_ANY(PEER)
-	exit')
+		#IS_A_PROVIDER
+		MARK_ANY(PROVIDER)
+		filter out
+			DENY_ANY(PROVIDER)
+			DENY_ANY(PEER)
+			exit
+		exit')
 define(`IS_A_PEER', `
-	MARK_ANY(PEER)
-	DENY_ANY(PROVIDER)
-	DENY_ANY(PEER)
-	exit')
+		#IS_A_PEER
+		MARK_ANY(PEER)
+		filter out
+			DENY_ANY(PROVIDER)
+			DENY_ANY(PEER)
+			exit
+		exit')
 
 define(`ROUTES', `print "`$1'($2) is ip_$1($2)\n"
 net node ip_$1($2) show rt *')

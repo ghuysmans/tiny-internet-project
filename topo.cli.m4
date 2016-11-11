@@ -90,8 +90,6 @@ ILINK(`BELNET', 1, 2, 1)
 net domain BELNET compute
 ILINK(`UCL', 1, 2, 1)
 net domain UCL compute
-ILINK(`ULg', 1, 2, 1)
-net domain ULg compute
 ILINK(`UCLA', 1, 2, 1)
 net domain UCLA compute
 

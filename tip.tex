@@ -38,5 +38,10 @@ Créer un lien entre les deux routeurs dans les deux sens et les configure comme
 \item PROVIDER : Permet de définir les filtres pour un routeur appartenant à un provider et donc rejeter les routes vers un autre provider ou vers un pair pour éviter de payer a sa place.
 \item PEER : Permet de définir les filtres pour un routeur appartenant à un pair et donc refuser les route vers un de nos provider ou un autre de nos pairs. Pour ne pas payer à sa place.
 
+\section{Conclusion}
+
+Pour une topologie moyennement simple comme celle de notre projet, nous avons pu voir que la configuration était très verbeuse et qu'un petit changement pouvait en entraîner beaucoup dans la configuration. De plus
+même lorsque la configuration est correcte, on peut entrainer des impossibilités d'accès entre AS avec la configuration des filtres.
+En clair une telle configuration peut être très compliqué alors que nous étions dans un simulateur et donc un tel déploiement de manière réelle peut l'être encore plus.
 \end{itemize}
 \end{document}

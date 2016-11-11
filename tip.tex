@@ -32,7 +32,7 @@ Après cela, il nous restait à créer les liens. Pour cela, nous avons détermi
 Pour chaque routeur BGP (donc en bordure d'AS), on lui dit quel réseau il gère et quels sont ses voisins avec lesquels il devra échanger des messages en n'oubliant pas d'autoriser les connexions.
 
 \section{Filtres de routage}
-Nous avons déterminé les différents liens commerciaux qui existaient entre chaque AS. Une fois cela fait, il ne restait plus plus qu'à ajouter les filtres afin de respecter la table \ref{tab:rels}.
+Nous avons déterminé les différents liens commerciaux qui existaient entre chaque AS. Une fois cela fait, il ne restait plus qu'à ajouter les filtres afin de respecter la table \ref{tab:rels}.
 \begin{table}[h]
 	\center
 	\includegraphics[width=0.5\columnwidth]{comlink.png}
@@ -94,7 +94,7 @@ define(`PEER', `#PEER($1, $2)
 \section{Problèmes rencontrés}
 Nous avions au départ mal lu la consigne et laissé des coûts IGP nuls. Un peu plus tard, nous avons découvert que \texttt{m4} pouvait facilement partir en boucle infinie si l'on n'y faisait pas trop attention.
 
-Un souci que nous n'avons pas pu corriger est que les routeurs de bordure n'arrivent pas à communiquer les routes BGP calculées à d'autres routeurs que ceux qui ont un lien direct avec eux au sein de leur AS.
+Un souci que nous n'avons pas pu régler est que les routeurs de bordure n'arrivent pas à communiquer les routes BGP calculées à d'autres routeurs que ceux qui ont un lien direct avec eux au sein de leur AS.
 Par exemple, R3 de Spring ne peut communiquer les routes BGP à R2 alors que R1 et R4, eux, les connaissent (et pourtant, il existe une route IGP de R3 vers R2).
 
 Du fait de notre importante utilisation de \texttt{m4}, le débogage était un peu plus long : nous ne nous sommes pas habitués à associer mentalement aux AS leurs adresses IP et celles-ci se retrouvaient fréquemment dans la sortie du simulateur. Pour pouvoir traquer plus facilement nos erreurs, nous avons émis des commentaires reprenant les appels de macros.
@@ -102,7 +102,7 @@ Du fait de notre importante utilisation de \texttt{m4}, le débogage était un p
 Il n'est pas possible de \textit{piper} la sortie de \texttt{m4} dans \texttt{cbgp} afin d'utiliser nos macros de manière interactive, probablement à cause du fait qu'il manipule le pseudo-terminal.
 
 \section{Conclusion}
-Pour une topologie moyennement simple comme celle de notre projet, nous avons pu voir que la configuration était très verbeuse et qu'un petit changement pouvait en entraîner beaucoup dans la configuration de plusieurs routeurs. De plus,
+Pour une topologie moyennement simple comme celle de notre projet, nous avons pu voir que la configuration était très verbeuse et qu'un petit changement pouvait en entraîner beaucoup d'autres dans la configuration de plusieurs routeurs. De plus,
 même lorsque la configuration est correcte, on peut isoler des AS d'autres AS avec nos filtres.
 En clair, une telle configuration peut être très compliquée dans une simulation : les (heureusement rares) problèmes réels de configuration BGP nous paraissent maintenant plus pardonnables...
 

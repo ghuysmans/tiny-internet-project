@@ -1,2 +1,8 @@
 *.swp
 topo.cli
+tip.aux
+tip.dvi
+tip.log
+tip.pdf
+tip.synctex.gz
+

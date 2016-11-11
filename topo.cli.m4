@@ -68,13 +68,13 @@ NODE(`ULg', 2, 16)
 
 ILINK(`Spring', 1, 3, 10)
 ILINK(`Spring', 2, 4, 10)
-ILINK(`Spring', 1, 2, 0)
-ILINK(`Spring', 3, 4, 0)
+ILINK(`Spring', 1, 2, 1)
+ILINK(`Spring', 3, 4, 1)
 net domain Spring compute
 ILINK(`BigCarrier', 1, 3, 10)
 ILINK(`BigCarrier', 2, 4, 10)
-ILINK(`BigCarrier', 1, 2, 0)
-ILINK(`BigCarrier', 3, 4, 0)
+ILINK(`BigCarrier', 1, 2, 1)
+ILINK(`BigCarrier', 3, 4, 1)
 net domain BigCarrier compute
 ILINK(`Abilene', 1, 2, 40)
 ILINK(`Abilene', 2, 3, 50)
@@ -86,13 +86,13 @@ ILINK(`GEANT', 4, 2, 5)
 ILINK(`GEANT', 2, 1, 10)
 ILINK(`GEANT', 1, 4, 12)
 net domain GEANT compute
-ILINK(`BELNET', 1, 2, 0)
+ILINK(`BELNET', 1, 2, 1)
 net domain BELNET compute
-ILINK(`UCL', 1, 2, 0)
+ILINK(`UCL', 1, 2, 1)
 net domain UCL compute
-ILINK(`ULg', 1, 2, 0)
+ILINK(`ULg', 1, 2, 1)
 net domain ULg compute
-ILINK(`UCLA', 1, 2, 0)
+ILINK(`UCLA', 1, 2, 1)
 net domain UCLA compute
 
 LINK(`iCompany', 1, `Spring', 1, 2)

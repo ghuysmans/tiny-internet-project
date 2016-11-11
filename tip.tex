@@ -24,7 +24,7 @@ Le but de ce projet était de reconstruire une certaine topologie (voir figure \
 En premier lieu, nous avons créé l'ensemble des nœuds présents sur la topologie. Ensuite, nous avons associé au nom de chaque AS son numéro et à chaque nœud, cet ASN.
 Après cela, il nous restait à créer les liens. Pour cela, nous avons déterminé deux types de liens :
 \begin{enumerate}
-	\item les liens internes, présents au sein d'un même AS, permettent à l'aide d'IGP à un routeur de connaître tous les autres de cet AS.
+	\item les liens internes, présents au sein d'un même AS, permettent à l'aide d'IGP à un routeur de connaître tous les autres de cet AS. Les poids ont été définis comme les latences en millisecondes.
 	\item les liens externes connectent les routeurs de bordure entre eux et permettent l'échange de routes BGP.
 \end{enumerate}
 

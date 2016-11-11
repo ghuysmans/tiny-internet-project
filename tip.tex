@@ -7,27 +7,43 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \title{Tiny Internet Project}
-\author{Huysmans Guillaume,Lempereur Martin}
+\author{Guillaume \textsc{Huysmans}, Martin \textsc{Lempereur}}
 \begin{document}
 \maketitle
+
 \section{Introduction}
-Le but de ce project était de reconstruire une certaine topologie composée de différents AS eux-même constitués de différents routeurs. En plus de cela nous devions paramétrer les routeurs pour que BGP fonctionne. Enfin nous devions configurer les filtres BGP pour que l'émission des routes respecte les différents liens commerciaux décrits dans l'énoncer et dont le comportement est défini dans le cours.
-\includegraphics[scale=0.3]{topo.png}
+Le but de ce projet était de reconstruire une certaine topologie (voir figure \ref{fig:topo}) composée de différents AS eux-mêmes constitués de différents routeurs, à l'instar d'Internet. En plus de cela, nous devions paramétrer BGP sur ces routeurs. Enfin, nous devions configurer les filtres BGP pour que l'émission des routes respecte les différents liens commerciaux décrits dans l'énoncé.
+\begin{figure}[h]
+	\includegraphics[width=\columnwidth]{topo.png}
+	\caption{Topologie de l'énoncé}
+	\label{fig:topo}
+\end{figure}
 
 \section{Création de la topologie}
-En premier lieu nous avons créer l'ensemble des nœuds présents sur la topologie. Ensuite nous avons défini les AS par des numéros et avons ajouter chaque nœud à son numéro d'AS.
-Après cela, il nous restait à créer les liens. Pour cela nous avons déterminé deux types de liens : les liens internes et les liens externes.
-Les liens internes sont ceux qui sont présents au sein d'un même AS et permet à l'aide d'IGP qu'un routeur connaisse tout les autres routeur de son AS. Le deuxième type de liens a été utilisé lui pour connecter les routeurs de bordure entre eux et donc permettre l'échange de route BGP.
+En premier lieu, nous avons créé l'ensemble des nœuds présents sur la topologie. Ensuite, nous avons associé au nom de chaque AS son numéro et à chaque nœud, cet ASN.
+Après cela, il nous restait à créer les liens. Pour cela, nous avons déterminé deux types de liens :
+\begin{enumerate}
+	\item les liens internes, présents au sein d'un même AS, permettent à l'aide d'IGP à un routeur de connaître tous les autres de cet AS.
+	\item les liens externes connectent les routeurs de bordure entre eux et permettent l'échange de routes BGP.
+\end{enumerate}
 
 \section{Configuration des routeurs BGP}
-Pour chaque routeur BGP donc qui se trouve en Bordure d'AS, on lui dit quel autre routeur BGP des autres AS est atteignable. De plus on explicite pour chaque routeur BGP quel sous-réseau il doit annoncer avec BGP. Après cela on dit que le routeur est actif.
+Pour chaque routeur BGP (donc en bordure d'AS), on lui dit quel réseau il gère et quels sont ses voisins avec lesquels il devra échanger des messages en n'oubliant pas d'autoriser les connexions.
+
 \section{Filtres de routage}
-Nous avons déterminé les différents liens commerciaux qu'ils existaient entre chaque AS. Une fois cela fait on a plus pour chaque routeur d'AS ajouter les filtres pour respecter le tableau suivant : 
-\includegraphics[scale=0.7]{comlink.png}
+Nous avons déterminé les différents liens commerciaux qui existaient entre chaque AS. Une fois cela fait, il ne restait plus plus qu'à ajouter les filtres afin de respecter le tableau \ref{tab:rels}.
+\begin{table}[h]
+	\includegraphics[width=\columnwidth]{comlink.png}
+	\caption{Relations interdomaines (source : cours de \textit{Réseaux II}, Bruno \textsc{Quoitin})}
+	\label{tab:rels}
+\end{table}
+
 \section{Problèmes rencontrés}
-Un soucis que nous n'avons pas pu corriger et que chaque routeur connait l'ensemble des routeurs présents dans son AS mais par contre, les routeurs de bordure n'arrivent pas a communiquer les routes BGP calculées à d'autres routeur que ceux qui ont un liens direct avec eux au seins de leur AS.
-Par exemple dans notre cas R3 de Spring ne peux communiquer les routes BGP à R2 alors que R1 et R4 eux les connaissent. Alors que il existe une route IGP de R3 vers R2.
+Un souci que nous n'avons pas pu corriger est que les routeurs de bordure n'arrivent pas à communiquer les routes BGP calculées à d'autres routeurs que ceux qui ont un lien direct avec eux au sein de leur AS.
+Par exemple, R3 de Spring ne peut communiquer les routes BGP à R2 alors que R1 et R4, eux, les connaissent (et pourtant, il existe une route IGP de R3 vers R2).
+
 \section{Outils utilisés}
-Pour nous simplifier l'écriture de notre script nous avons utilisé le système de macros proposé par m4.
-Ainsi nous avons pu regrouper plusieurs commandes au seins d'une seule macros.
+Pour nous simplifier l'écriture de notre script et éviter de nombreuses erreurs (par copier-coller), nous avons utilisé \texttt{m4}, un puissant outil de remplacement de texte.
+Ainsi, nous avons pu regrouper plusieurs commandes au sein d'une seule macro et rendre le script bien plus lisible.
+
 \end{document}

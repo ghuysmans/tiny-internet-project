@@ -29,3 +29,5 @@ define(`PEERS', `print "`$1'($2) is connected to:\n"
 bgp router ip_$1($2) show peers')
 define(`PING', `print "`$1'($2) pings `$3'($4): "
 net node ip_$1($2) ping ip_$3($4)')
+define(`TRACE', `print "`$1'($2) to `$3'($4):\n"
+net node ip_$1($2) traceroute ip_$3($4)')

@@ -29,5 +29,14 @@ Un soucis que nous n'avons pas pu corriger et que chaque routeur connait l'ensem
 Par exemple dans notre cas R3 de Spring ne peux communiquer les routes BGP à R2 alors que R1 et R4 eux les connaissent. Alors que il existe une route IGP de R3 vers R2.
 \section{Outils utilisés}
 Pour nous simplifier l'écriture de notre script nous avons utilisé le système de macros proposé par m4.
-Ainsi nous avons pu regrouper plusieurs commandes au seins d'une seule macros.
+Ainsi nous avons pu regrouper plusieurs commandes au seins d'une seule macros. Voici les macros existantes présentes dans le fichier shortcuts.m4
+\begin{itemize}
+\item NODE(Nom d'AS,Num Routeur, Masque de réseau) : Créer un nœud avec une adresse ip définie par le numéro d routeur dans le réseau de l'AS.
+\item LINK(AS 1,Num Routeur AS 1, AS 2 ,Num Routeur AS 2, Poids du lien) :
+Créer un lien entre les deux routeurs dans les deux sens et les configure comme étant des routeurs BGP.
+\item ILINK : Comme LINK mais au seins d'un seul AS et donc configure un lien IGP en plus.
+\item PROVIDER : Permet de définir les filtres pour un routeur appartenant à un provider et donc rejeter les routes vers un autre provider ou vers un pair pour éviter de payer a sa place.
+\item PEER : Permet de définir les filtres pour un routeur appartenant à un pair et donc refuser les route vers un de nos provider ou un autre de nos pairs. Pour ne pas payer à sa place.
+
+\end{itemize}
 \end{document}

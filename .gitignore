@@ -5,3 +5,8 @@ tip.dvi
 tip.log
 tip.pdf
 *.gz
+
+_build
+*.native
+*.byte
+tip.png

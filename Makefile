@@ -6,3 +6,5 @@ tiny-internet-42.tar.gz: ${SOURCE} tip.cli tip.pdf
 	tar -cf $(basename $@) $^
 	rm $@
 	gzip $(basename $@)
+tip.png: tip.cli topo.ml
+	ocaml topo.ml <$< |dot -Tpng >$@
